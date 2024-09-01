@@ -1,0 +1,82 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-o",
+                "${workspaceFolder}/bin/compressor",   // Ruta al ejecutable
+                "${workspaceFolder}/src/*.c",           // Archivos fuente
+                "-I${workspaceFolder}/include",          // Directorio de archivos de cabecera
+                "-Wall",
+                "-Wextra",
+                "-O2"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Compila el proyecto en un ejecutable"
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "dependsOn": ["build"],
+            "command": "${workspaceFolder}/bin/compressor",  // Ejecutable a correr
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "detail": "Ejecuta el programa después de la compilación"
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "rm",
+            "args": [
+                "-rf",
+                "${workspaceFolder}/bin/*",     // Elimina todos los archivos en el directorio bin
+                "${workspaceFolder}/obj/*"      // Elimina todos los archivos en el directorio obj
+            ],
+            "group": {
+                "kind": "none",
+                "isDefault": true
+            },
+            "detail": "Limpia los archivos generados por la compilación"
+        },
+        {
+            "label": "format",
+            "type": "shell",
+            "command": "clang-format",
+            "args": [
+                "-i",                             // Formatea en el archivo original
+                "${workspaceFolder}/src/*.c",     // Archivos fuente
+                "${workspaceFolder}/include/*.h"  // Archivos de cabecera
+            ],
+            "group": {
+                "kind": "none",
+                "isDefault": false
+            },
+            "detail": "Aplica formato a los archivos fuente y de cabecera"
+        },
+        {
+            "label": "lint",
+            "type": "shell",
+            "command": "cppcheck",
+            "args": [
+                "--enable=all",                   // Habilita todas las verificaciones
+                "${workspaceFolder}/src",         // Directorio de código fuente
+                "--std=c99",                      // Estándar C
+                "--force"
+            ],
+            "group": {
+                "kind": "none",
+                "isDefault": false
+            },
+            "detail": "Ejecuta cppcheck para análisis estático del código"
+        }
+    ]
+}
